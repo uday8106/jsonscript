@@ -9,6 +9,12 @@ trigger:
 pool:
   vmImage: ubuntu-latest
 
+variables:
+  # Name of your Azure service connection that has access to the Key Vault
+  azureServiceConnection: 'My-AzureServiceConnection'
+  keyVaultName: 'samplemlrah6542403263'    # <-- replace with your Key Vault name
+
+
 steps:
 - script: echo Hello, world!
   displayName: 'Run a one-line script'
