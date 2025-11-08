@@ -1,0 +1,25 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger:
+- main
+
+pool:
+  vmImage: ubuntu-latest
+
+steps:
+- script: echo Hello, world!
+  displayName: 'Run a one-line script'
+
+- script: |
+    echo Add other tasks to build, test, and deploy your project.
+    echo "Converting secret.json to .env file using jq..."
+
+      # Ensure jq is available (preinstalled in Ubuntu)
+       jq -r 'to_entries | .[] | "\(.key)=\(.value)"' secret.json > config.env
+
+       echo "✅ Generated config.env content:"
+       cat config.env
+    displayName: 'Run a multi-line script'
