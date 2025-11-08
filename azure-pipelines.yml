@@ -1,0 +1,37 @@
+trigger: none
+
+pool:
+  vmImage: ubuntu-latest
+
+steps:
+  - checkout: self
+    displayName: "Checkout repository"
+
+  - script: |
+      echo "Parsing secret.json and exporting to .env file..."
+      
+      # Make sure the file exists
+      ls -l secret.json
+
+      # Run Python to parse JSON and create .env
+      python3 - << 'EOF'
+import json, os
+
+# Load the JSON file from the repo
+with open('secret.json') as f:
+    data = json.load(f)
+
+# Create the output folder if it doesn't exist
+os.makedirs('config', exist_ok=True)
+
+# Write key-value pairs to config/test.env
+with open('config/test.env', 'w') as out:
+    for k, v in data.items():
+        out.write(f"{k}={v}\n")
+
+print("✅ JSON secret exported to config/test.env")
+EOF
+
+      echo "Generated test.env content:"
+      cat config/test.env
+    displayName: "Convert JSON to .env"
