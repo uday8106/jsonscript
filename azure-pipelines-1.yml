@@ -15,13 +15,9 @@ steps:
 
 - script: |
     sudo apt-get update -y
-    sudo apt-get install jq -y
-    echo Add other tasks to build, test, and deploy your project.
+    sudo apt-get install -y jq
     echo "Converting secret.json to .env file using jq..."
-
-      # Ensure jq is available (preinstalled in Ubuntu)
-       jq -r 'to_entries | .[] | "\(.key)=\(.value)"' secret.json > config.env
-
-       echo "✅ Generated config.env content:"
-       cat config.env
-    displayName: 'Run a multi-line script'
+    jq -r 'to_entries[] | "\(.key)=\(.value|tostring)"' secret.json > config.env
+    echo "Generated config.env:"
+    cat config.env
+  displayName: 'Run a multi-line script'
